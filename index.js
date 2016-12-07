@@ -41,7 +41,7 @@ var config = {
     "useEncryptedPasswords": true
   };
 
-var dashboard = new ParseDashboard(config);
+var dashboard = new ParseDashboard(config, true);
 app.use('/dashboard', dashboard);
 
 app.get('/', function(req, res) {
