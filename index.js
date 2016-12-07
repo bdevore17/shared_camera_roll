@@ -1,5 +1,6 @@
 var express = require('express');
 var ParseServer = require('parse-server').ParseServer;
+var ParseDashboard = require('parse-dashboard');
 var path = require('path');
 
 if (!process.env.DATABASE_URL) {
@@ -25,6 +26,23 @@ var app = express();
 
 var mountPath = process.env.PARSE_MOUNT || '/parse';
 app.use(mountPath, api);
+
+var config = {
+    "apps": [{
+      "serverURL": process.env.SERVER_URL,
+      "appId": process.env.APP_ID,
+      "masterKey": process.env.MASTER_KEY,
+      "appName": "Shared_Camera_Roll"
+    }],
+    "users": [{
+      "user": process.env.USERNAME,
+      "pass": process.env.PASSWORD
+    }],
+    "useEncryptedPasswords": true
+  };
+
+var dashboard = new ParseDashboard(config);
+app.use('/dashboard', dashboard);
 
 app.get('/', function(req, res) {
   res.status(200).send('Shared Camera Roll Server is up and running.');
